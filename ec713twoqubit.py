@@ -65,7 +65,7 @@ def extractSyndromes(errors, errorRates):
 
 # Implement the error correction procedure in Section III in the paper. For example, the circuit for measurement of IIIZZZZ follows FIG.3 (b).
 def correctErrors(errors, errorRates, verbose=False):
-  if verbose: print "starting syndrome0"
+  if verbose: print("starting syndrome0")
   prepX(7, errors, errorRates)
   prepZ(8, errors, errorRates)
   cnot(7, 3, errors, errorRates)
@@ -77,9 +77,9 @@ def correctErrors(errors, errorRates, verbose=False):
   syndrome0 = measX(7, errors, errorRates)
   flag0 = measZ(8, errors, errorRates)
   if flag0:
-    if verbose: print "flag0"
+    if verbose: print("flag0")
     syndromes = extractZSyndromes(errors, errorRates)
-    if verbose: print "corrX:", syndromes
+    if verbose: print(f"corrX:", {syndromes})
     if syndromes == [0,0,0,1,1,1]:
       errors.x ^= 1<<6
     elif syndromes == [0,0,0,0,0,1]:
@@ -87,17 +87,17 @@ def correctErrors(errors, errorRates, verbose=False):
     elif syndromes == [0,0,0,1,0,0]:
       errors.x ^= 1<<3
     syndromes = extractXSyndromes(errors, errorRates)
-    if verbose: print "Z:", syndromes
+    if verbose: print("Z:", syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
   elif syndrome0:
-    if verbose: print "syndrome0"
+    if verbose: print("syndrome0")
     syndromes = extractSyndromes(errors, errorRates)
-    if verbose: print syndromes
+    if verbose: print(syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
 
-  if verbose: print "starting syndrome1"
+  if verbose: print("starting syndrome1")
   prepX(7, errors, errorRates)
   prepZ(8, errors, errorRates)
   cnot(7, 1, errors, errorRates)
@@ -109,9 +109,9 @@ def correctErrors(errors, errorRates, verbose=False):
   syndrome1 = measX(7, errors, errorRates)
   flag1 = measZ(8, errors, errorRates)
   if flag1:
-    if verbose: print "flag1"
+    if verbose: print("flag1")
     syndromes = extractZSyndromes(errors, errorRates)
-    if verbose: print "corrX:", syndromes
+    if verbose: print("corrX:", syndromes)
     if syndromes == [0,0,0,1,1,1]:
       errors.x ^= 1<<6
     elif syndromes == [0,0,0,0,0,1]:
@@ -119,17 +119,17 @@ def correctErrors(errors, errorRates, verbose=False):
     elif syndromes == [0,0,0,0,1,0]:
       errors.x ^= 1<<1
     syndromes = extractXSyndromes(errors, errorRates)
-    if verbose: print "Z:", syndromes
+    if verbose: print("Z:", syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
   elif syndrome1:
-    if verbose: print "syndrome1"
+    if verbose: print("syndrome1")
     syndromes = extractSyndromes(errors, errorRates)
-    if verbose: print syndromes
+    if verbose: print(syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
   
-  if verbose: print "starting syndrome2"
+  if verbose: print("starting syndrome2")
   prepX(7, errors, errorRates)
   prepZ(8, errors, errorRates)
   cnot(7, 0, errors, errorRates)
@@ -141,9 +141,9 @@ def correctErrors(errors, errorRates, verbose=False):
   syndrome2 = measX(7, errors, errorRates)
   flag2 = measZ(8, errors, errorRates)
   if flag2:
-    if verbose: print "flag2"
+    if verbose: print("flag2")
     syndromes = extractZSyndromes(errors, errorRates)
-    if verbose: print "corrX:", syndromes
+    if verbose: print("corrX:", syndromes)
     if syndromes == [0,0,0,1,1,1]:
       errors.x ^= 1<<6
     elif syndromes == [0,0,0,0,1,0]:
@@ -151,17 +151,17 @@ def correctErrors(errors, errorRates, verbose=False):
     elif syndromes == [0,0,0,0,0,1]:
       errors.x ^= 1<<0
     syndromes = extractXSyndromes(errors, errorRates)
-    if verbose: print "Z:", syndromes
+    if verbose: print("Z:", syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
   elif syndrome2:
-    if verbose: print "syndrome2"
+    if verbose: print("syndrome2")
     syndromes = extractSyndromes(errors, errorRates)
-    if verbose: print syndromes
+    if verbose: print(syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
 
-  if verbose: print "starting syndrome3"
+  if verbose: print("starting syndrome3")
   prepZ(7, errors, errorRates)
   prepX(8, errors, errorRates)
   cnot(3, 7, errors, errorRates)
@@ -173,9 +173,9 @@ def correctErrors(errors, errorRates, verbose=False):
   syndrome3 = measZ(7, errors, errorRates)
   flag3 = measX(8, errors, errorRates)
   if flag3:
-    if verbose: print "flag3"
+    if verbose: print("flag3")
     syndromes = extractXSyndromes(errors, errorRates)
-    if verbose: print "corrZ:", syndromes
+    if verbose: print("corrZ:", syndromes)
     if syndromes == [1,1,1,0,0,0]:
       errors.z ^= 1<<6
     elif syndromes == [0,0,1,0,0,0]:
@@ -183,17 +183,17 @@ def correctErrors(errors, errorRates, verbose=False):
     elif syndromes == [1,0,0,0,0,0]:
       errors.z ^= 1<<3
     syndromes = extractZSyndromes(errors, errorRates)
-    if verbose: print "X:", syndromes
+    if verbose: print("X:", syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
   elif syndrome3:
-    if verbose: print "syndrome3"
+    if verbose: print("syndrome3")
     syndromes = extractSyndromes(errors, errorRates)
-    if verbose: print syndromes
+    if verbose: print(syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
 
-  if verbose: print "starting syndrome4"
+  if verbose: print("starting syndrome4")
   prepZ(7, errors, errorRates)
   prepX(8, errors, errorRates)
   cnot(1, 7, errors, errorRates)
@@ -205,9 +205,9 @@ def correctErrors(errors, errorRates, verbose=False):
   syndrome4 = measZ(7, errors, errorRates)
   flag4 = measX(8, errors, errorRates)
   if flag4:
-    if verbose: print "flag4"
+    if verbose: print("flag4")
     syndromes = extractXSyndromes(errors, errorRates)
-    if verbose: print "corrZ:", syndromes
+    if verbose: print("corrZ:", syndromes)
     if syndromes == [1,1,1,0,0,0]:
       errors.z ^= 1<<6
     elif syndromes == [0,0,1,0,0,0]:
@@ -215,17 +215,17 @@ def correctErrors(errors, errorRates, verbose=False):
     elif syndromes == [0,1,0,0,0,0]:
       errors.z ^= 1<<1
     syndromes = extractZSyndromes(errors, errorRates)
-    if verbose: print "X:", syndromes
+    if verbose: print("X:", syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
   elif syndrome4:
-    if verbose: print "syndrome4"
+    if verbose: print("syndrome4")
     syndromes = extractSyndromes(errors, errorRates)
-    if verbose: print syndromes
+    if verbose: print(syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
 
-  if verbose: print "starting syndrome5"
+  if verbose: print("starting syndrome5")
   prepZ(7, errors, errorRates)
   prepX(8, errors, errorRates)
   cnot(0, 7, errors, errorRates)
@@ -237,9 +237,9 @@ def correctErrors(errors, errorRates, verbose=False):
   syndrome5 = measZ(7, errors, errorRates)
   flag5 = measX(8, errors, errorRates)
   if flag5:
-    if verbose: print "flag5"
+    if verbose: print("flag5")
     syndromes = extractXSyndromes(errors, errorRates)
-    if verbose: print "corrZ:", syndromes
+    if verbose: print("corrZ:", syndromes)
     if syndromes == [1,1,1,0,0,0]:
       errors.z ^= 1<<6
     elif syndromes == [0,1,0,0,0,0]:
@@ -247,13 +247,13 @@ def correctErrors(errors, errorRates, verbose=False):
     elif syndromes == [0,0,1,0,0,0]:
       errors.z ^= 1<<0
     syndromes = extractZSyndromes(errors, errorRates)
-    if verbose: print "X:", syndromes
+    if verbose: print("X:", syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
   elif syndrome5:
-    if verbose: print "syndrome5"
+    if verbose: print("syndrome5")
     syndromes = extractSyndromes(errors, errorRates)
-    if verbose: print syndromes
+    if verbose: print(syndromes)
     correctErrorsUsingSyndromes(errors, syndromes)
     return
 
@@ -296,7 +296,7 @@ def simulateErrorCorrection(gamma, trials):
   errorRates = ErrorRates((4/15.)*gamma, gamma, (4/15.)*gamma)
   
   failures = 0
-  for k in xrange(trials): 
+  for k in range(trials): 
     correctErrors(errors, errorRates)
     errorsCopy.x = errors.x
     errorsCopy.z = errors.z
@@ -306,14 +306,14 @@ def simulateErrorCorrection(gamma, trials):
       failures += 1
       errors.x = 0
       errors.z = 0
-  print failures
+  print(failures)
 
 # Wrapper function for the plot. More trials are needed for small gammas due to the confidence interval.
 gammas = [10**(i/10.-4) for i in range(21)]
 for i in range(10):
-  print "gamma=10^(%d/10-4), trials=10^7"% i
+  print("gamma=10^(%d/10-4), trials=10^7"% i)
   simulateErrorCorrection(gammas[i], 10**7)
 for i in range(11):
-  print "gamma=10^(%d/10-4), trials=10^6"% (i+10)
+  print("gamma=10^(%d/10-4), trials=10^6"% (i+10))
   simulateErrorCorrection(gammas[i+10], 10**6)
 
