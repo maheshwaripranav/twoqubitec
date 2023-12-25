@@ -1,6 +1,7 @@
 # Implement the fault-tolerant error correction of [[7,1,3]] code using only two ancilla qubit. 
 
 from utility import *
+import matplotlib.pyplot as plt
 
 # Perform weight-1 Pauli correction according to the syndromes of six stabilizers.
 def correctErrorsUsingSyndromes(errors, syndromes): 
@@ -306,14 +307,27 @@ def simulateErrorCorrection(gamma, trials):
       failures += 1
       errors.x = 0
       errors.z = 0
-  print(failures)
+  # print(failures)
+  return failures/trials
 
 # Wrapper function for the plot. More trials are needed for small gammas due to the confidence interval.
-gammas = [10**(i/10.-4) for i in range(21)]
-for i in range(10):
-  print("gamma=10^(%d/10-4), trials=10^7"% i)
-  simulateErrorCorrection(gammas[i], 10**7)
-for i in range(11):
-  print("gamma=10^(%d/10-4), trials=10^6"% (i+10))
-  simulateErrorCorrection(gammas[i+10], 10**6)
+# gammas = [10**(i/10.-4) for i in range(21)]
+# for i in range(10):
+#   print("gamma=10^(%d/10-4), trials=10^7"% i)
+#   simulateErrorCorrection(gammas[i], 10**7)
+# for i in range(11):
+#   print("gamma=10^(%d/10-4), trials=10^6"% (i+10))
+#   simulateErrorCorrection(gammas[i+10], 10**6)
 
+
+gammas = [0.1, 0.05, 0.01, 0.007, 0.003, 0.001, 0.0007, 0.0003, 0.0001]
+deltas = []
+print('Gammas \t Logical')
+for g in gammas:
+  failure_rate = simulateErrorCorrection(g, 10**5)
+  deltas.append(failure_rate)
+  print(f'{g} \t {failure_rate}')
+plt.xscale('log')
+plt.yscale('log')
+plt.plot(gammas, deltas)
+plt.plot(gammas, gammas)
