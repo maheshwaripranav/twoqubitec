@@ -80,7 +80,7 @@ def correctErrors(errors, errorRates, verbose=False):
   if flag0:
     if verbose: print("flag0")
     syndromes = extractZSyndromes(errors, errorRates)
-    if verbose: print(f"corrX:", {syndromes})
+    if verbose: print("corrX:", syndromes)
     if syndromes == [0,0,0,1,1,1]:
       errors.x ^= 1<<6
     elif syndromes == [0,0,0,0,0,1]:
@@ -279,8 +279,11 @@ def reduceError(errors):
     trialErrors.z = errors.z
     for digit in range(len(stabilizers)):
       if (k>>digit)&1: 
+        print(bin(trialErrors.x), bin(trialErrors.z))
+        print(k, digit)
         trialErrors.x ^= stabilizers[digit][0]
         trialErrors.z ^= stabilizers[digit][1]
+        print(bin(trialErrors.x), bin(trialErrors.z))
     if weight(trialErrors) < bestWeight: 
       bestErrors.x = trialErrors.x
       bestErrors.z = trialErrors.z
@@ -289,7 +292,7 @@ def reduceError(errors):
 
 # Run consecutive trials of error correction with physical error rate of gamma, and count the number of failures, i.e., when the trialing error is not correctable by perfect error correction.
 # The logical error rate is calculated as the ratio of failures over trials. 
-def simulateErrorCorrection(gamma, trials): 
+def simulateErrorCorrection(gamma, trials, verbose=False): 
   errors = Errors(0, 0)
   errorsCopy = Errors(0, 0)
   
@@ -298,15 +301,21 @@ def simulateErrorCorrection(gamma, trials):
   
   failures = 0
   for k in range(trials): 
-    correctErrors(errors, errorRates)
+    correctErrors(errors, errorRates, verbose)
     errorsCopy.x = errors.x
     errorsCopy.z = errors.z
-    correctErrors(errorsCopy, errorRates0)
+    # print('first step completed')
+    # print(f'Errors are {bin(errors.x)}, {bin(errors.z)}')
+    correctErrors(errorsCopy, errorRates0, verbose)
+    # print(f'Errors are {bin(errorsCopy.x)}, {bin(errorsCopy.z)}')
+    # print('second step completed')
     errorsCopy = reduceError(errorsCopy)
+    # print(f'Reduced Errors are {bin(errorsCopy.x)}, {bin(errorsCopy.z)}')
     if (errorsCopy.x & ((1<<7)-1)) or (errorsCopy.z & ((1<<7)-1)): 
       failures += 1
       errors.x = 0
       errors.z = 0
+    # print(f'{k+1} rounds completed.')
   # print(failures)
   return failures/trials
 
@@ -320,11 +329,11 @@ def simulateErrorCorrection(gamma, trials):
 #   simulateErrorCorrection(gammas[i+10], 10**6)
 
 
-gammas = [0.1, 0.05, 0.01, 0.007, 0.003, 0.001, 0.0007, 0.0003, 0.0001]
+gammas = [0.1]#, 0.05]#, 0.01, 0.007, 0.003, 0.001]#, 0.0007, 0.0003, 0.0001]
 deltas = []
 print('Gammas \t Logical')
 for g in gammas:
-  failure_rate = simulateErrorCorrection(g, 10**5)
+  failure_rate = simulateErrorCorrection(g, 1, verbose=False)
   deltas.append(failure_rate)
   print(f'{g} \t {failure_rate}')
 plt.xscale('log')
